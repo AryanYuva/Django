@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+    <style>
+        .col-md-3
+        {
+          display: inline-block;
+          margin-left:-4px;
+          margin-right:-4px;
+        }
+        .col-md-3 img{
+          max-width:250px;
+          height:300px;
+        }
+        .carousel-indicators  .active{
+          background-color:blue;
+        }
+        body .carousel-indicator li{
+        background-color: blue;
+        }
+        body .carousel-control-prev-icon,
+        body .carousel-control-next-icon{
+        background-color:blue;
+        }
+        .carousel-control-prev,
+        .carousel-control-next{
+         top: auto;
+        bottom: auto;
+        padding-top: 222px;
+        }
+        body .no-padding{
+        padding-left:0,
+        padding-right:0;
+        }
+    </style>
+</head>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Aryan Cart Pvt.Ltd</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/about">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/tracker">Tracker</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/contact">Contact Us</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-warning btn-outline-success" type="submit">Search</button>
+      </form>
+      {% comment %} <button type="button" class="btn btn-secondary mx-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tooltip on bottom">
+        Cart(<span id="cart">0</span>)
+      </button> {% endcomment %}
+      <button type="button" data-html="true" id="popcart" class="btn btn-secondary mx-2" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Cart">
+        Cart(<span id="cart">0</span>)
+      </button>
+    </div>
+  </div>
+ </nav>
+ <div class="container">
+   {% for product, range, nSlides in allprods %}
+   <h3 class="my-4"> {{product.0.category}}</h3>
+   <div class="row">
+  <div id="carouselExampleIndicators{{forloop.counter}}" class="carousel slide my-3" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators{{forloop.counter}}" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      {% for i in range %}
+      <button type="button" data-bs-target="#carouselExampleIndicators{{forloop.parentloop.counter}}" data-bs-slide-to="{{i}}" aria-label="Slide 2"></button>
+      {% endfor %}
+      {% comment %} <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button> {% endcomment %}
+    </div>
+    <div class="container carousel-inner no-padding">
+
+      <div class="carousel-item active">
+      
+      {% for i in product %}
+       <div class="col-xs-3 col-sm-3 col-md-3 my-3">
+        <div class="card align-items-center" style="width: 18rem;">
+          <img src="/media/{{i.image}}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{i.product_name}}</h5>
+            <p class="card-text">{{i.desc|slice:"0:23"}}.....</p>
+            <span id="divpr{{i.id}}">
+            <button id="pr{{i.id}}" class="btn btn-primary cart">Add To Cart</button>
+          </span>
+            <a href="/shop/products/{{i.id}}"><button id="qv{{i.id}}" class="btn btn-primary">QuickView</button></a>
+          </div>
+        </div>
+       </div> 
+       {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last%}
+      </div><div class="carousel-item">
+       {% endif %}
+       {% endfor %}
+      </div>
+       {% comment %}  {% endcomment %}
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators{{forloop.counter}}" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators{{forloop.counter}}" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+</div>
+</div>
+{% endfor %}
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <!-- Optional JavaScript -->
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+        {% block js %}
+      <script>
+        console.log('working')
+        if(localStorage.getItem('cart') == null)
+        {
+           var cart={};
+        }
+        else {
+           Cart = JSON.parse(localStorage.getItem('cart'));
+        }
+
+        $('.cart').click(function(){
+
+          console.log('clicked');
+          var idstr = this.id.toString();
+          console.log(idstr);
+          if (cart[idstr] != undefined){
+            cart[idstr] = cart[idstr] + 1;
+          }
+          else
+          {
+           cart[idstr] = 1;
+          }
+          console.log(cart);
+          localStorage.setItem('cart', JSON.stringify(cart));
+          });
+      
+      </script>
+        {% endblock%}
+        
+  </body>
+</html>
